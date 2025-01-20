@@ -2,6 +2,7 @@ package ir.barook.flightSearchService.dto;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -11,8 +12,8 @@ import java.time.LocalTime;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class FlightSearchResponseDto {
-    private Long id;
+public class FlightSearchResponseDto implements Serializable {
+
     private String origin;
     private String destination;
     private LocalDate departureDate;

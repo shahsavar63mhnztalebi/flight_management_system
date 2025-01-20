@@ -7,7 +7,7 @@
         <groupId>ir.barook</groupId>
         <artifactId>flightRecommendationSystem</artifactId>
         <version>1.0.0</version>
-        <relativePath/>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>flightManagementService</artifactId>

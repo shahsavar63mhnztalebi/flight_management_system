@@ -23,7 +23,7 @@ public class FlightSearchController {
     @GetMapping
     public ResponseEntity<List<FlightSearchResponseDto>> searchFlights(@RequestBody FlightSearchRequestDto requestDto) {
         try {
-            List<FlightSearchResponseDto> flights = flightSearchService.searchFlightsByDate(requestDto).join();
+            List<FlightSearchResponseDto> flights = flightSearchService.searchFlightsByDate(requestDto);
             if (flights.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }

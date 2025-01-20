@@ -1,4 +1,4 @@
-package ir.barook.flightSearchService.dto;
+package ir.barook.partnerService.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @ToString
-public class SearchFlightRequestDto {
+public class FlightSearchRequestDto {
     private String origin;
     private String destination;
     private LocalDate departureDate;

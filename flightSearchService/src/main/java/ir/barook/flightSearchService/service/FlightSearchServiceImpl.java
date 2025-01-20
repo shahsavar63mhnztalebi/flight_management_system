@@ -3,15 +3,12 @@ package ir.barook.flightSearchService.service;
 import ir.barook.flightSearchService.dto.FlightSearchRequestDto;
 import ir.barook.flightSearchService.dto.FlightSearchResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -28,7 +25,8 @@ public class FlightSearchServiceImpl implements FlightSearchService {
                     "http://localhost:9003/partner3/api/flights/search"
             );
 
-    public CompletableFuture<List<FlightSearchResponseDto>> searchFlightsByDate(FlightSearchRequestDto requestDto) {
+    @Cacheable(value = "search_flights_cache")
+    public List<FlightSearchResponseDto> searchFlightsByDate(FlightSearchRequestDto requestDto) {
         List<CompletableFuture<List<FlightSearchResponseDto>>> futures = PARTNER_API_URLS.stream()
                 .map(url -> CompletableFuture.supplyAsync(() -> searchPartnerFlights(url, requestDto)))
                 .collect(Collectors.toList());
@@ -38,7 +36,7 @@ public class FlightSearchServiceImpl implements FlightSearchService {
                         .map(CompletableFuture::join)
                         .flatMap(List::stream)
                         .collect(Collectors.toList()))
-                .thenApply(this::combineAndSortFlights);
+                .thenApply(this::combineAndSortFlights).join();
     }
 
     private List<FlightSearchResponseDto> searchPartnerFlights(String apiUrl, FlightSearchRequestDto requestDto) {

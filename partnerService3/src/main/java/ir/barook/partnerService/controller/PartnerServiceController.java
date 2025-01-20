@@ -1,7 +1,7 @@
 package ir.barook.partnerService.controller;
 
 import ir.barook.partnerService.dto.FlightSearchResponseDto;
-import ir.barook.partnerService.dto.SearchFlightRequestDto;
+import ir.barook.partnerService.dto.FlightSearchRequestDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +19,7 @@ import java.util.List;
 public class PartnerServiceController {
 
     @PostMapping("/search")
-    public ResponseEntity<List<FlightSearchResponseDto>> searchFlights(@RequestBody SearchFlightRequestDto request) {
+    public ResponseEntity<List<FlightSearchResponseDto>> searchFlights(@RequestBody FlightSearchRequestDto request) {
         List<FlightSearchResponseDto> partner1Flights = Arrays.asList(
                 new FlightSearchResponseDto("THR", "AHV", LocalDate.of(2025, 1, 2), LocalTime.of(14, 30), BigDecimal.valueOf(630), 230),
                 new FlightSearchResponseDto("THR", "AHV", LocalDate.of(2025, 1, 2), LocalTime.of(15, 30), BigDecimal.valueOf(130), 330),
