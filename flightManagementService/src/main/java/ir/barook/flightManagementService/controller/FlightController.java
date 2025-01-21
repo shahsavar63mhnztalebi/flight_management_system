@@ -1,19 +1,13 @@
 package ir.barook.flightManagementService.controller;
 
 import ir.barook.flightManagementService.dto.FlightSearchResponseDto;
-import ir.barook.flightManagementService.dto.SearchFlightRequestDto;
+import ir.barook.flightManagementService.dto.FlightSearchRequestDto;
 import ir.barook.flightManagementService.model.Flight;
 import ir.barook.flightManagementService.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -53,13 +47,13 @@ public class FlightController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<List<FlightSearchResponseDto>> searchFlights(@RequestBody SearchFlightRequestDto request) {
-        List<Flight> flights = flightService.searchFlights(request);
-        List<FlightSearchResponseDto> partner1Flights = Arrays.asList(
-                new FlightSearchResponseDto(Long.valueOf(1), "THR", "AHV", LocalDate.of(2025, 1, 2), LocalTime.of(18, 30), BigDecimal.valueOf(600), 200),
-                new FlightSearchResponseDto(Long.valueOf(1), "THR", "AHV", LocalDate.of(2025, 1, 2), LocalTime.of(17, 30), BigDecimal.valueOf(100), 300));
+    public ResponseEntity<List<FlightSearchResponseDto>> searchFlights(@RequestBody FlightSearchRequestDto request) {
+        //mock data
+//        List<FlightSearchResponseDto> partner1Flights = Arrays.asList(
+//                new FlightSearchResponseDto(Long.valueOf(1), "THR", "AHV", LocalDate.of(2025, 1, 2), LocalTime.of(18, 30), BigDecimal.valueOf(600), 200),
+//                new FlightSearchResponseDto(Long.valueOf(1), "THR", "AHV", LocalDate.of(2025, 1, 2), LocalTime.of(17, 30), BigDecimal.valueOf(100), 300));
 
-        return ResponseEntity.ok(partner1Flights);
+        return ResponseEntity.ok(flightService.searchFlights(request));
     }
 }
 

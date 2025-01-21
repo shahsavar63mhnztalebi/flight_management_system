@@ -1,22 +1,30 @@
 package ir.barook.flightManagementService.service;
 
-import ir.barook.flightManagementService.dto.SearchFlightRequestDto;
+import ir.barook.flightManagementService.dto.FlightSearchRequestDto;
+import ir.barook.flightManagementService.dto.FlightSearchResponseDto;
 import ir.barook.flightManagementService.exceptions.FlightNotFoundException;
+import ir.barook.flightManagementService.mapper.ResponseDtoMapper;
 import ir.barook.flightManagementService.model.Flight;
 import ir.barook.flightManagementService.repository.FlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FlightServiceImpl implements FlightService{
 
-    @Autowired
-    private FlightRepository flightRepository;
+    private final FlightRepository flightRepository;
+    private final ResponseDtoMapper responseDtoMapper;
 
-     public Flight getFlightById(Long id) {
+    @Autowired
+    public FlightServiceImpl(FlightRepository flightRepository, ResponseDtoMapper responseDtoMapper) {
+        this.flightRepository = flightRepository;
+        this.responseDtoMapper = responseDtoMapper;
+    }
+
+    public Flight getFlightById(Long id) {
          return flightRepository.findById(id) .orElseThrow(() -> new FlightNotFoundException(id));
      }
 
@@ -41,8 +49,10 @@ public class FlightServiceImpl implements FlightService{
         return flightRepository.save(flight);
     }
 
-    public List<Flight> searchFlights(SearchFlightRequestDto requestDto) {
-        return flightRepository.findByOriginAndDestinationAndDepartureDate(
-                requestDto.getOrigin(), requestDto.getDestination(), requestDto.getDepartureDate());
+    public List<FlightSearchResponseDto> searchFlights(FlightSearchRequestDto requestDto) {
+        List<Flight> flights = flightRepository.findByOriginAndDestinationAndDepartureDate(
+                               requestDto.getOrigin(), requestDto.getDestination(), requestDto.getDepartureDate());
+
+        return flights.stream().map(responseDtoMapper::mapToFlightSearchResponseDto).collect(Collectors.toList());
     }
 }
